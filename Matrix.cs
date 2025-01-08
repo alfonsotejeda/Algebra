@@ -48,6 +48,10 @@ namespace Algera.Matrix
             {
                 return matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 0];
             }
+            if(matrix.GetLength(0) == 3)
+            {
+                return matrix[0, 0] * matrix[1, 1] * matrix[2, 2] + matrix[0, 1] * matrix[1, 2] * matrix[2, 0] + matrix[0, 2] * matrix[1, 0] * matrix[2, 1] - matrix[0, 2] * matrix[1, 1] * matrix[2, 0] - matrix[0, 1] * matrix[1, 0] * matrix[2, 2] - matrix[0, 0] * matrix[1, 2] * matrix[2, 1];
+            }
             double[] determinat = new double[matrix.GetLength(1)];
             for(int i = column ; i < matrix.GetLength(1);i++)
             {
@@ -89,7 +93,7 @@ namespace Algera.Matrix
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    cofactorsMatrix[i,j] = Math.Pow(-1,i+j) * CalculateTheDeterminantAuxiliarForAdjoin(matrix , i , j);
+                    cofactorsMatrix[i,j] = Math.Pow(-1,i+j) * CalculateTheDeterminant(GetMinors(matrix,i,j), i , j);
                 }
             }
             double[,] adjoinMatrix = TransposeMatrix(cofactorsMatrix);
@@ -106,26 +110,6 @@ namespace Algera.Matrix
                 }
             }
             return transposeMatrix;
-        }
-        private double CalculateTheDeterminantAuxiliarForAdjoin(double [,] matrix , int row , int column)
-        {
-            if (matrix.GetLength(0) != matrix.GetLength(1))
-            {
-                throw new ArgumentException("The matrix must be square");
-            }
-            if (matrix.GetLength(0) == 1)
-            {
-                return matrix[0, 0];
-            }
-            if (matrix.GetLength(0) == 2)
-            {
-                return matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 0];
-            }
-            double minorDeterminat = 0;
-            
-            minorDeterminat = CalculateTheDeterminantAuxiliarForAdjoin(GetMinors(matrix , row , column) , row , column);
-            
-            return minorDeterminat;
         }
     }    
 }
